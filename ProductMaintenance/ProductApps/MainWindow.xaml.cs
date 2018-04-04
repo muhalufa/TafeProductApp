@@ -21,6 +21,7 @@ namespace ProductApps
     public partial class MainWindow : Window
     {
         Product cProduct;
+        const decimal deliveryCharge = 25m;
 
         public MainWindow()
         {
@@ -39,6 +40,9 @@ namespace ProductApps
             {
                 MessageBox.Show("Enter data again", "Data Entry Error");
             }
+
+            decimal afterDelivery = cProduct.TotalPayment + deliveryCharge;
+            totalChargeTextBlock.Text = afterDelivery.ToString("C");
         }
 
         private void clearButton_Click(object sender, RoutedEventArgs e)
