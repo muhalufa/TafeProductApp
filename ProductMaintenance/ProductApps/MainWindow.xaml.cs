@@ -21,7 +21,6 @@ namespace ProductApps
     public partial class MainWindow : Window
     {
         Product cProduct;
-        const decimal deliveryCharge = 25m;
 
         public MainWindow()
         {
@@ -32,22 +31,26 @@ namespace ProductApps
         {
             const decimal deliveryCharge = 25m;
             const decimal wrapCharge = 5m;
+            const decimal GST = 1.1m;
             try
             {
                 cProduct = new Product(Convert.ToDecimal(priceTextBox.Text), Convert.ToInt16(quantityTextBox.Text));
                 cProduct.calTotalPayment();
                 totalPaymentTextBlock.Text = Convert.ToString(cProduct.TotalPayment);
+
+                decimal afterDelivery = cProduct.TotalPayment + deliveryCharge;
+                totalChargeTextBlock.Text = afterDelivery.ToString("C");
+
+                decimal totalAfterWrap = afterDelivery + wrapCharge;
+                totalChargeAfterWrapTextBlock.Text = totalAfterWrap.ToString("C");
+
+                decimal totalAfterGST = (cProduct.TotalPayment + deliveryCharge + wrapCharge) * GST;
+                totalAfterGstTextBlock.Text = totalAfterGST.ToString("C");
             }
             catch (FormatException)
             {
                 MessageBox.Show("Enter data again", "Data Entry Error");
-            }
-
-            decimal afterDelivery = cProduct.TotalPayment + deliveryCharge;
-            totalChargeTextBlock.Text = afterDelivery.ToString("C");
-
-            decimal totalAfterWrap = afterDelivery + wrapCharge;
-            totalChargeAfterWrapTextBlock.Text = totalAfterWrap.ToString("C");
+            }            
         }
 
         private void clearButton_Click(object sender, RoutedEventArgs e)
